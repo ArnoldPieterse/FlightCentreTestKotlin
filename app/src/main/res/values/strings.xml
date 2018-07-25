@@ -1,6 +1,14 @@
 <resources>
     <string name="app_name">FlightCentreKotlinTest</string>
 
+    <string name="identifier_airline_code">Code: %1$s</string>
+    <string name="identifier_flight_number">Flight # %1$s</string>
+
+    <string name="identifier_flight_number2">Flight #</string>
+    <string name="identifier_flight_destination">Destination</string>
+    <string name="identifier_flight_from">From</string>
+    <string name="identifier_flight_departure_date">Date</string>
+
     <string name="test_flight_number">1XB</string>
     <string name="test_flight_from">USA</string>
     <string name="test_flight_to">Belgium</string>
