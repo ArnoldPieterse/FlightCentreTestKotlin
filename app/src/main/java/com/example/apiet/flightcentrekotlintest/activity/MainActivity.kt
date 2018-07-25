@@ -11,6 +11,7 @@ import com.example.apiet.flightcentrekotlintest.R
 import com.example.apiet.flightcentrekotlintest.activity.adapter.FlightsAdapter
 import com.example.apiet.flightcentrekotlintest.activity.model.Flight
 import com.example.apiet.flightcentrekotlintest.activity.service.Api
+import com.example.apiet.flightcentrekotlintest.activity.service.Util
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
@@ -22,7 +23,6 @@ import retrofit2.converter.gson.GsonConverterFactory
 class MainActivity : AppCompatActivity(), FlightsAdapter.Listener {
 
     private val TAG = MainActivity::class.java.simpleName
-    private val BASE_URL = "https://glacial-caverns-15124.herokuapp.com/flights/"
     private var compositeDisposable: CompositeDisposable? = null
     private var flightsArrayList: ArrayList<Flight>? = null
     private var adapter: FlightsAdapter? = null
@@ -48,7 +48,7 @@ class MainActivity : AppCompatActivity(), FlightsAdapter.Listener {
 
     private fun loadJSON() {
         val api = Retrofit.Builder()
-                .baseUrl(BASE_URL)
+                .baseUrl(Util().BASE_URL)
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create())
                 .build().create(Api::class.java)

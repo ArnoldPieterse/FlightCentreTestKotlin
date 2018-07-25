@@ -9,6 +9,7 @@ import android.widget.Toast
 import com.example.apiet.flightcentrekotlintest.R
 import com.example.apiet.flightcentrekotlintest.activity.model.Flight
 import com.example.apiet.flightcentrekotlintest.activity.service.Api
+import com.example.apiet.flightcentrekotlintest.activity.service.Util
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
@@ -16,13 +17,10 @@ import kotlinx.android.synthetic.main.activity_flight.*
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
-import java.text.SimpleDateFormat
-import java.util.*
 
 class FlightActivity : AppCompatActivity() {
 
     private val TAG = FlightActivity::class.java.simpleName
-    private val BASE_URL = "https://glacial-caverns-15124.herokuapp.com/flights/"
     private var compositeDisposable: CompositeDisposable? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -31,7 +29,7 @@ class FlightActivity : AppCompatActivity() {
 
         compositeDisposable = CompositeDisposable()
 
-        //handle -1 value as an error
+        //a error will show as a toast on fail if default value gets used
         val intentObject : Intent = intent
         val flightId = intentObject.getIntExtra("flightId", -1)
 
@@ -42,7 +40,7 @@ class FlightActivity : AppCompatActivity() {
 
     private fun loadJSON(flightId: Int) {
         val api = Retrofit.Builder()
-                .baseUrl(BASE_URL)
+                .baseUrl(Util().BASE_URL)
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create())
                 .build().create(Api::class.java)
@@ -75,57 +73,21 @@ class FlightActivity : AppCompatActivity() {
         airlineCode.text = getString(R.string.identifier_airline_code, flight.airline_code)
         flightNumber.text = getString(R.string.identifier_flight_number, flight.flight_number)
 
-        departureDate.text = getDateString(flight.departure_date)
-        departureTime.text = getTimeString(flight.departure_date)
+        departureDate.text = Util().getDateString(flight.departure_date)
+        departureTime.text = Util().getTimeString(flight.departure_date)
         departureCity.text = getString(R.string.identifier_city, flight.departure_city)
         departureAirport.text = getString(R.string.identifier_airport, flight.departure_airport)
 
         scheduledDuration.text = getString(R.string.identifier_duration, flight.scheduled_duration)
 
-        arrivalDate.text = getDateString(flight.arrival_date)
-        arrivalTime.text = getTimeString(flight.arrival_date)
+        arrivalDate.text = Util().getDateString(flight.arrival_date)
+        arrivalTime.text = Util().getTimeString(flight.arrival_date)
         arrivalCity.text = getString(R.string.identifier_city, flight.arrival_city)
         arrivalAirport.text = getString(R.string.identifier_airport, flight.arrival_airport)
 
-        createdAt.text = getString(R.string.identifier_created_at, "${getDateString(flight.created_at)} \n ${getTimeString(flight.created_at)}")
-        updatedAt.text = getString(R.string.identifier_updated_at, "${getDateString(flight.updated_at)} \n ${getTimeString(flight.updated_at)}")
+        createdAt.text = getString(R.string.identifier_created_at, "${Util().getDateString(flight.created_at)} \n ${Util().getTimeString(flight.created_at)}")
+        updatedAt.text = getString(R.string.identifier_updated_at, "${Util().getDateString(flight.updated_at)} \n ${Util().getTimeString(flight.updated_at)}")
         swipe_refresh_detail.isRefreshing = false
-    }
-
-    //The date converters should be places in a helper/util class
-    private fun getTimeString(dateString: String): String {
-        val dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSS"
-        val date = SimpleDateFormat(dateFormat, Locale.US).parse(dateString)
-        val calender = Calendar.getInstance()
-        calender.time = date
-
-        var hour :String = calender.get(Calendar.HOUR_OF_DAY).toString()
-        var minute :String = calender.get(Calendar.MINUTE).toString()
-        if(hour.toInt() < 10) {
-            hour = "0$hour"
-        }
-        if(minute.toInt() < 10) {
-            minute = "0$minute"
-        }
-        return " $hour : $minute"
-    }
-
-    private fun getDateString(dateString: String): String {
-        val dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSS"
-        val date = SimpleDateFormat(dateFormat, Locale.US).parse(dateString)
-        val calender = Calendar.getInstance()
-        calender.time = date
-
-        val year :String = calender.get(Calendar.YEAR).toString()
-        var month :String = (calender.get(Calendar.MONTH)+1).toString()
-        var day :String = calender.get(Calendar.DAY_OF_MONTH).toString()
-        if(month.toInt() < 10) {
-            month = "0$month"
-        }
-        if(day.toInt() < 10) {
-            day = "0$day"
-        }
-        return " $year/$month/$day"
     }
 
     private fun handleError(error: Throwable) {
