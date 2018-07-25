@@ -8,7 +8,6 @@ import android.widget.TextView
 import com.example.apiet.flightcentrekotlintest.R
 import com.example.apiet.flightcentrekotlintest.activity.model.Flight
 import com.example.apiet.flightcentrekotlintest.activity.service.Util
-import java.text.SimpleDateFormat
 import java.util.*
 
 class FlightsAdapter (private val dataList : ArrayList<Flight>, private val listener : Listener): RecyclerView.Adapter<FlightsAdapter.FlightViewHolder>() {
