@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">FlightCentreKotlinTest</string>
+
+    <string name="test_flight_number">1XB</string>
+    <string name="test_flight_from">USA</string>
+    <string name="test_flight_to">Belgium</string>
+    <string name="test_departure_date">12/02/2018</string>
+    <string name="test_departure_time">18:23</string>
+    <string name="test">TEST</string>
 </resources>
