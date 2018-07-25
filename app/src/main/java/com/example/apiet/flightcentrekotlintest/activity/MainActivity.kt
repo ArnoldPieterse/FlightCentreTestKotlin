@@ -1,7 +1,8 @@
-package com.example.apiet.flightcentrekotlintest
+package com.example.apiet.flightcentrekotlintest.activity
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import com.example.apiet.flightcentrekotlintest.R
 
 class MainActivity : AppCompatActivity() {
 
